@@ -1848,7 +1848,7 @@ body.is-mobile.orientation-landscape #gameScreen .btn-back:active{
 /* ★ 手机端对局记录浮动按钮 */
 .mobile-log-fab{
   position: fixed;
-  right: 8px;
+  right: calc(200px + 12px);
   top: 44px;
   width: 36px;
   height: 36px;
@@ -1872,7 +1872,7 @@ body.is-mobile.orientation-landscape #gameScreen .btn-back:active{
 .mobile-log-panel{
   position: fixed;
   left: 8px;
-  right: 8px;
+  right: calc(200px + 12px);
   top: 44px;
   bottom: 8px;
   background: #0e131c;
