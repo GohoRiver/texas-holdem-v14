@@ -428,6 +428,25 @@
     </div>
     <div class="ingame-history-body" id="inGameHistoryBody"></div>
   </div>
+    <!-- ★ 手机横屏：对局记录浮动按钮 -->
+  <div id="mobileLogFab" class="mobile-log-fab hidden" title="对局记录">📋</div>
+
+  <!-- ★ 手机横屏：对局记录面板（含 牌局记录 + 历史记录 两个 tab） -->
+  <div id="mobileLogPanel" class="mobile-log-panel hidden">
+    <div class="mobile-log-head">
+      <div class="mobile-log-tabs">
+        <button class="mobile-log-tab active" data-tab="action" data-i18n="logTitle">牌局记录</button>
+        <button class="mobile-log-tab" data-tab="history" data-i18n="ingameHistoryTitle">对局记录</button>
+      </div>
+      <button id="mobileLogClose" class="chat-close">×</button>
+    </div>
+    <div class="mobile-log-body" id="mobileLogBodyAction">
+      <div class="log-area" id="mobileLogArea"></div>
+    </div>
+    <div class="mobile-log-body hidden" id="mobileLogBodyHistory">
+      <div class="ingame-history-body" id="mobileLogHistoryBody"></div>
+    </div>
+  </div>
 </main>
 
 <div id="joinRoomOverlay" class="overlay hidden">
