@@ -77,6 +77,16 @@ function applyDeviceClass(){
   G.orientation = ori;
   document.body.classList.toggle('orientation-portrait',  ori === 'portrait');
   document.body.classList.toggle('orientation-landscape', ori === 'landscape');
+    /* ★ 根据是否在游戏中，同步隐藏顶部导航栏 */
+  const tb = document.querySelector('.topbar');
+  if(tb){
+    const inGame = document.getElementById('gameScreen') && !document.getElementById('gameScreen').classList.contains('hidden');
+    if(mobile && ori === 'landscape' && inGame){
+      tb.style.display = 'none';
+    } else {
+      tb.style.display = '';
+    }
+  }
   const hint = document.getElementById('portraitHint');
   if(hint){
     if(mobile && ori === 'portrait') hint.classList.remove('hidden');
@@ -860,6 +870,10 @@ function openAiLevel(lv){
   G.handNumber = 0; G.gameOver = false;
   $("lobbyScreen").classList.add("hidden");
   $("gameScreen").classList.remove("hidden");
+    if(G.isMobile && G.orientation === 'landscape'){
+    const tb = document.querySelector('.topbar');
+    if(tb) tb.style.display = 'none';
+  }
   $("onlineLobby").classList.add("hidden");
   if($("gameLevelLabel")) $("gameLevelLabel").textContent = lv.name + " " + lv.sb + "/" + lv.bb + " · " + G.players.length + (isEn() ? "P" : "人");
   if($("gameModeLabel")){ $("gameModeLabel").textContent = isEn() ? "AI" : "AI 练习"; $("gameModeLabel").classList.remove('real'); }
@@ -945,6 +959,10 @@ function enterOnlineRoom(lv, mode, roomId, isHost){
   G._timerKey = null; G._nextHandEndsAt = 0; G._turnEndsAt = 0;
   $("lobbyScreen").classList.add("hidden");
   $("gameScreen").classList.remove("hidden");
+    if(G.isMobile && G.orientation === 'landscape'){
+    const tb = document.querySelector('.topbar');
+    if(tb) tb.style.display = 'none';
+  }
   /* ★ 新增：标记进入游戏，隐藏顶部网页导航栏 */
   document.body.classList.add('game-active');
   $("onlineLobby").classList.add("hidden");
@@ -1518,6 +1536,8 @@ function handleOnlineMessage(msg){
         alert(isEn() ? "Room closed" : "房间已关闭");
         G.online.active = false;
         resetSessionState(); resetTableDom(); hideWaitingBar();
+          const tb = document.querySelector('.topbar');
+  if(tb) tb.style.display = '';
         $("gameScreen").classList.add("hidden");
         $("lobbyScreen").classList.remove("hidden");
         showScreen("lobby");
