@@ -210,14 +210,22 @@ function playActionSound(action){
 }
 
 function log(msg, cls){
-  const el = $("logArea"); if(!el) return;
-  const div = document.createElement("div");
-  div.className = "log-line" + (cls ? " " + cls : "");
-  div.textContent = msg;
-  el.appendChild(div); el.scrollTop = el.scrollHeight;
+  const areas = [$("logArea"), $("mobileLogArea")].filter(Boolean);
+  areas.forEach(function(el){
+    const div = document.createElement("div");
+    div.className = "log-line" + (cls ? " " + cls : "");
+    div.textContent = msg;
+    el.appendChild(div);
+    el.scrollTop = el.scrollHeight;
+    /* 保留最近 200 条 */
+    while(el.childNodes.length > 200) el.removeChild(el.firstChild);
+  });
   updateHandInfo();
 }
-function clearLog(){ const e = $("logArea"); if(e) e.innerHTML = ""; }
+function clearLog(){
+  const areas = [$("logArea"), $("mobileLogArea")].filter(Boolean);
+  areas.forEach(function(el){ el.innerHTML = ""; });
+}
 
 function showScreen(name){
   ["lobbyScreen","rulesScreen","myNumbersScreen","gameScreen"].forEach(function(id){
@@ -312,44 +320,45 @@ function renderNumbers(){
   });
 }
 
-function renderHandHistory(){
-  const body = document.getElementById('handHistoryBody');
-  if(!body) return;
-  const list = PokerStorage.getHandHistory ? PokerStorage.getHandHistory() : [];
-  body.innerHTML = "";
+function renderHistoryList(list){
   if(!list.length){
-    const empty = document.createElement('div');
-    empty.className = 'hand-history-empty';
-    empty.textContent = isEn() ? 'No hands recorded yet' : '还没有记录（打一手后自动出现）';
-    body.appendChild(empty);
-    return;
+    return '<div class="ingame-history-empty">' + (isEn() ? 'No hands yet' : '还没有记录') + '</div>';
   }
-  list.forEach(function(rec){
-    const item = document.createElement('div');
-    item.className = 'hand-history-item';
+  return list.map(function(rec){
     const myCardsHtml = (rec.myCards || []).map(function(s){
       const red = s.indexOf('♥') >= 0 || s.indexOf('♦') >= 0;
-      return '<div class="mini-card face ' + (red ? 'red' : 'black') + '">' +
-        '<div class="v">' + s.slice(0, -1) + '</div>' +
-        '<div class="s">' + s.slice(-1) + '</div></div>';
+      return '<span class="mini-card-inline ' + (red ? 'red' : 'black') + '">' + s + '</span>';
     }).join('');
     const commHtml = (rec.community || []).map(function(s){
       const red = s.indexOf('♥') >= 0 || s.indexOf('♦') >= 0;
-      return '<div class="mini-card face ' + (red ? 'red' : 'black') + '">' +
-        '<div class="v">' + s.slice(0, -1) + '</div>' +
-        '<div class="s">' + s.slice(-1) + '</div></div>';
+      return '<span class="mini-card-inline ' + (red ? 'red' : 'black') + '">' + s + '</span>';
     }).join('');
     const deltaCls = rec.delta >= 0 ? 'pos' : 'neg';
     const deltaText = (rec.delta >= 0 ? '+' : '') + fmtNum(rec.delta);
-    item.innerHTML =
-      '<span class="hh-hand">#' + rec.handNumber + '</span>' +
-      '<span class="hh-cards">' + myCardsHtml + '</span>' +
-      '<span class="hh-community">' + commHtml + '</span>' +
-      '<span class="hh-result ' + deltaCls + '">' + deltaText + '</span>';
-    body.appendChild(item);
-  });
+    return '<div class="ingame-history-item">' +
+      '<div class="ihi-row"><b>#' + rec.handNumber + '</b><span class="ihi-result ' + deltaCls + '">' + deltaText + '</span></div>' +
+      '<div class="ihi-row"><span class="ihi-label">' + (isEn()?'You':'你') + '</span>' + myCardsHtml + '</div>' +
+      (commHtml ? '<div class="ihi-row"><span class="ihi-label">' + (isEn()?'Board':'公共') + '</span>' + commHtml + '</div>' : '') +
+      (rec.result ? '<div class="ihi-row"><span class="ihi-label">' + (isEn()?'Hand':'成牌') + '</span><span>' + rec.result + '</span></div>' : '') +
+      '</div>';
+  }).join('');
 }
 
+function openInGameHistory(){
+  const el = document.getElementById('inGameHistory');
+  const body = document.getElementById('inGameHistoryBody');
+  const mobileBody = document.getElementById('mobileLogHistoryBody');
+  const list = PokerStorage.getHandHistory ? PokerStorage.getHandHistory() : [];
+  const html = renderHistoryList(list);
+  if(el && body){
+    body.innerHTML = html;
+    el.classList.remove('hidden');
+  }
+  if(mobileBody){
+    mobileBody.innerHTML = html;
+  }
+  if(window.PokerAudio) PokerAudio.play('click');
+}
 /* ================= 定时器清理工具 ================= */
 function clearAiActionTimer(){
   if(G._aiActionTimer){ clearTimeout(G._aiActionTimer); G._aiActionTimer = null; }
@@ -412,7 +421,12 @@ function resetTableDom(){
   const chat = document.getElementById('chatMessages'); if(chat) chat.innerHTML = '';
   const chatPanel = document.getElementById('chatPanel'); if(chatPanel) chatPanel.classList.add('hidden');
   const fab = document.getElementById('chatFab'); if(fab) fab.classList.add('hidden');
+    const mlogFab = document.getElementById('mobileLogFab');
+  if(mlogFab) mlogFab.classList.remove('hidden');
   const ih = document.getElementById('inGameHistory'); if(ih) ih.classList.add('hidden');
+    const mlogArea = document.getElementById('mobileLogArea'); if(mlogArea) mlogArea.innerHTML = '';
+  const mlogHist = document.getElementById('mobileLogHistoryBody'); if(mlogHist) mlogHist.innerHTML = '';
+  const mlogPanel = document.getElementById('mobileLogPanel'); if(mlogPanel) mlogPanel.classList.add('hidden');
   clearAllBubbles();
 }
 
@@ -948,6 +962,10 @@ function enterOnlineRoom(lv, mode, roomId, isHost){
   hideHumanActions();
   const fab = document.getElementById('chatFab');
   if(fab) fab.classList.remove('hidden');
+    const mlogFab = document.getElementById('mobileLogFab');
+  if(mlogFab) mlogFab.classList.add('hidden');
+  const mlogPanel = document.getElementById('mobileLogPanel');
+  if(mlogPanel) mlogPanel.classList.add('hidden');
 }
 function updateOnlineLobbyUI(){ updateWaitingBar(); }
 function hostStartGame(playerOrder, playersInfo){
@@ -3287,6 +3305,48 @@ document.addEventListener("DOMContentLoaded", function(){
 
   bindRaiseInputEvents();
   initChat();
+    /* ★ 手机端对局记录 */
+  const mlogFab = document.getElementById('mobileLogFab');
+  const mlogPanel = document.getElementById('mobileLogPanel');
+  const mlogClose = document.getElementById('mobileLogClose');
+  if(mlogFab && mlogPanel){
+    mlogFab.onclick = function(){
+      mlogPanel.classList.toggle('hidden');
+      if(!mlogPanel.classList.contains('hidden')){
+        /* 打开时刷新历史 tab */
+        const list = PokerStorage.getHandHistory ? PokerStorage.getHandHistory() : [];
+        const mBody = document.getElementById('mobileLogHistoryBody');
+        if(mBody) mBody.innerHTML = renderHistoryList(list);
+        /* 默认显示"牌局记录"tab */
+        const tabA = document.querySelector('.mobile-log-tab[data-tab="action"]');
+        if(tabA && !tabA.classList.contains('active')) tabA.click();
+      }
+      if(window.PokerAudio) PokerAudio.play('click');
+    };
+  }
+  if(mlogClose) mlogClose.onclick = function(){
+    mlogPanel.classList.add('hidden');
+  };
+  document.querySelectorAll('.mobile-log-tab').forEach(function(tab){
+    tab.onclick = function(){
+      document.querySelectorAll('.mobile-log-tab').forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      const which = tab.getAttribute('data-tab');
+      const bodyA = document.getElementById('mobileLogBodyAction');
+      const bodyH = document.getElementById('mobileLogBodyHistory');
+      if(which === 'action'){
+        if(bodyA) bodyA.classList.remove('hidden');
+        if(bodyH) bodyH.classList.add('hidden');
+      } else {
+        if(bodyA) bodyA.classList.add('hidden');
+        if(bodyH) bodyH.classList.remove('hidden');
+        const list = PokerStorage.getHandHistory ? PokerStorage.getHandHistory() : [];
+        const mBody = document.getElementById('mobileLogHistoryBody');
+        if(mBody) mBody.innerHTML = renderHistoryList(list);
+      }
+      if(window.PokerAudio) PokerAudio.play('click');
+    };
+  });
   const hob = $("historyOpenBtn"); if(hob) hob.onclick = openInGameHistory;
   const ihc = $("inGameHistoryClose"); if(ihc) ihc.onclick = closeInGameHistory;
 });
