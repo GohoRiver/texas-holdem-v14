@@ -1335,6 +1335,7 @@ function broadcastFullState(){
         lastAction: p.lastAction,
         position: p.position, positionKey: p.positionKey,
         revealCards: p.revealCards,
+                _intentReveal: p._intentReveal || false,
         preflopOrder: p.preflopOrder, postflopOrder: p.postflopOrder,
         _highlight: p._highlight ? Array.from(p._highlight) : null
       };
@@ -1420,6 +1421,7 @@ function applyFullState(state){
     p.lastAction = sp.lastAction;
     p.position = sp.position; p.positionKey = sp.positionKey;
     p.revealCards = sp.revealCards;
+        p._intentReveal = sp._intentReveal || false;
     p.preflopOrder = sp.preflopOrder; p.postflopOrder = sp.postflopOrder;
     if(sp._highlight) p._highlight = new Set(normalizeCards(sp._highlight));
     else p._highlight = null;
@@ -1490,9 +1492,13 @@ function handleOnlineMessage(msg){
     showSeatBubble(msg.peerId, msg.text || '', true);
     return;
   }
-  if(msg.type === 'show_cards'){
+    if(msg.type === 'show_cards'){
     const p = G.players.find(function(x){ return x.peerId === msg.peerId; });
-    if(p){ p.revealCards = true; render(); }
+    if(p){
+      p.revealCards = true;
+      if(msg.intent) p._intentReveal = true;
+      render();
+    }
     if(G.online.isHost) broadcastFullState();
     return;
   }
@@ -2228,13 +2234,15 @@ function offerShowCards(){
   if(!btn) return;
   btn.classList.remove('hidden');
   btn.textContent = isEn() ? 'Show cards' : '秀牌';
-  btn.onclick = function(){
+    btn.onclick = function(){
     btn.classList.add('hidden');
     if(window.PokerAudio) PokerAudio.play('click');
     me.revealCards = true;
+    /* ★ 标记为主动秀牌 */
+    me._intentReveal = true;
     render();
     if(G.online.active && window.PokerOnline){
-      PokerOnline.sendShowCards({ peerId: PokerOnline.getMyId() });
+      PokerOnline.sendShowCards({ peerId: PokerOnline.getMyId(), intent: true });
     }
   };
   if(G._showCardsTimer) clearTimeout(G._showCardsTimer);
@@ -2429,10 +2437,11 @@ function render(){
     }
     seat.setAttribute('data-chip-side', chipSide);
         /* ★ 秀牌时不显示灰暗效果 */
-    seat.classList.toggle("folded", (!!p.folded || p.seated === false) && !p.revealCards);
+        seat.classList.toggle("folded", (!!p.folded || p.seated === false) && !p.revealCards);
     seat.classList.toggle("reveal", !!p.revealCards);
     seat.classList.toggle("empty", p.seated === false);
-
+    /* ★ 主动秀牌高亮 */
+    seat.classList.toggle("intent-reveal", !!p._intentReveal);
     /* ★ 只有当前回合的玩家亮金色 */
     const isCurrentTurn = (G.currentPlayerIndex === i)
       && !G.gameOver
@@ -2739,6 +2748,17 @@ function openRaisePanel(){
   updateRaiseAmount();
   panel.classList.remove("hidden");
   if(window.PokerAudio) PokerAudio.play('click');
+    /* ★ 打开加注面板时，自动滚动到可见区域 */
+  setTimeout(function(){
+    const panel = document.getElementById('raisePanel');
+    if(panel){
+      try {
+        panel.scrollIntoView({ block: 'end', behavior: 'smooth' });
+      } catch(e){
+        panel.scrollIntoView(false);
+      }
+    }
+  }, 80);
 }
 
 function updateRaiseAmount(){
