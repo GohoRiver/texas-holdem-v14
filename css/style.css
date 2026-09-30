@@ -1950,14 +1950,14 @@ body.is-desktop .mobile-log-panel{
 .btn-zoom:hover{ background: rgba(251,191,36,.15); }
 .btn-zoom:active{ transform: scale(.94); }
 
-/* 缩放级别：作用于 #gameScreen 内所有内容 */
-body.zoom-50 #gameScreen{ zoom: 0.5; }
-body.zoom-60 #gameScreen{ zoom: 0.6; }
-body.zoom-70 #gameScreen{ zoom: 0.7; }
-body.zoom-80 #gameScreen{ zoom: 0.8; }
-body.zoom-90 #gameScreen{ zoom: 0.9; }
-body.zoom-100 #gameScreen{ zoom: 1; }
-body.zoom-110 #gameScreen{ zoom: 1.1; }
+/* ★ 缩放：容器尺寸 = 视口 / zoom，配合 zoom 缩小，整体视觉等比缩小 */
+body.zoom-50  #gameScreen{ right:auto!important; bottom:auto!important; width:200vw!important; height:200vh!important; height:200dvh!important; zoom:0.5!important; }
+body.zoom-60  #gameScreen{ right:auto!important; bottom:auto!important; width:166.67vw!important; height:166.67vh!important; height:166.67dvh!important; zoom:0.6!important; }
+body.zoom-70  #gameScreen{ right:auto!important; bottom:auto!important; width:142.86vw!important; height:142.86vh!important; height:142.86dvh!important; zoom:0.7!important; }
+body.zoom-80  #gameScreen{ right:auto!important; bottom:auto!important; width:125vw!important; height:125vh!important; height:125dvh!important; zoom:0.8!important; }
+body.zoom-90  #gameScreen{ right:auto!important; bottom:auto!important; width:111.11vw!important; height:111.11vh!important; height:111.11dvh!important; zoom:0.9!important; }
+body.zoom-100 #gameScreen{ right:0!important; bottom:0!important; width:100vw!important; height:100vh!important; height:100dvh!important; zoom:1!important; }
+body.zoom-110 #gameScreen{ right:0!important; bottom:0!important; width:100vw!important; height:100vh!important; height:100dvh!important; zoom:1.1!important; }
 
 /* 手机横屏时缩放按钮稍微小一点 */
 body.is-mobile.orientation-landscape #gameScreen .btn-zoom{
@@ -2050,3 +2050,28 @@ body.is-mobile.orientation-landscape #gameScreen .seat.intent-reveal{
     0 0 32px rgba(59,130,246,.3),
     0 8px 20px rgba(0,0,0,.6) !important;
 }
+
+/* ★ 聊天关闭按钮：加大 + 强制可点 */
+.chat-close{
+  pointer-events: auto !important;
+  z-index: 10 !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  padding: 6px 10px !important;
+  font-size: 22px !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-2) !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.chat-close:hover{ color: var(--gold) !important; }
+.chat-close:active{ transform: scale(.92) !important; }
+
+/* 保证面板本身可点击 */
+.chat-panel{ pointer-events: auto !important; }
+.chat-panel-head{ pointer-events: auto !important; }
