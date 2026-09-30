@@ -3441,23 +3441,24 @@ document.addEventListener("DOMContentLoaded", function(){
   if(_zoomLevel < 50) _zoomLevel = 50;
   if(_zoomLevel > 110) _zoomLevel = 110;
 
-  function applyZoom(){
+      function applyZoom(){
     const scale = _zoomLevel / 100;
-    let meta = document.querySelector('meta[name="viewport"]');
-    if(!meta){
-      meta = document.createElement('meta');
-      meta.setAttribute('name', 'viewport');
-      document.head.appendChild(meta);
+    const gs = document.getElementById('gameScreen');
+    if(!gs) return;
+
+    if(scale === 1){
+      /* 还原 */
+      gs.style.removeProperty('--zoom-scale');
+      gs.style.removeProperty('--zoom-w');
+      gs.style.removeProperty('--zoom-h');
+      document.body.classList.remove('zoom-active');
+    } else {
+      /* 缩小：容器尺寸 = 视口 / scale，配合 zoom = scale，整体视觉等比 */
+      gs.style.setProperty('--zoom-scale', scale);
+      gs.style.setProperty('--zoom-w', (100 / scale) + 'vw');
+      gs.style.setProperty('--zoom-h', (100 / scale) + 'vh');
+      document.body.classList.add('zoom-active');
     }
-    meta.setAttribute('content',
-      'width=device-width, initial-scale=' + scale +
-      ', maximum-scale=' + scale +
-      ', minimum-scale=' + scale +
-      ', user-scalable=no, viewport-fit=cover'
-    );
-    const classes = ['zoom-50','zoom-60','zoom-70','zoom-80','zoom-90','zoom-100','zoom-110'];
-    document.body.classList.remove.apply(document.body.classList, classes);
-    document.body.classList.add('zoom-' + _zoomLevel);
     try { localStorage.setItem('neon_holdem_zoom', String(_zoomLevel)); } catch(e){}
   }
   applyZoom();
