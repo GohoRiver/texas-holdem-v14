@@ -329,7 +329,20 @@ function renderNumbers(){
     body.appendChild(row);
   });
 }
-
+function refreshHistoryPanelsIfOpen(){
+  const list = PokerStorage.getHandHistory ? PokerStorage.getHandHistory() : [];
+  const html = renderHistoryList(list);
+  const el1 = document.getElementById('inGameHistory');
+  const body1 = document.getElementById('inGameHistoryBody');
+  if(el1 && body1 && !el1.classList.contains('hidden')){
+    body1.innerHTML = html;
+  }
+  const el2 = document.getElementById('mobileLogPanel');
+  const mBody = document.getElementById('mobileLogHistoryBody');
+  if(el2 && mBody && !el2.classList.contains('hidden')){
+    mBody.innerHTML = html;
+  }
+}
 function renderHistoryList(list){
   if(!list.length){
     return '<div class="ingame-history-empty">' + (isEn() ? 'No hands yet' : '还没有记录') + '</div>';
@@ -827,6 +840,8 @@ function renderTableGrid(containerId, mode){
 /* ================= AI 场 ================= */
 function openAiLevel(lv){
   resetSessionState();
+    /* ★ 新开一局，清空历史记录 */
+  if(PokerStorage.clearHandHistory) PokerStorage.clearHandHistory();
   resetTableDom();
   hideWaitingBar();
   G.gameMode = 'ai';
@@ -942,6 +957,8 @@ function doJoinRoom(lv, mode, roomId){
 }
 function enterOnlineRoom(lv, mode, roomId, isHost){
   resetSessionState();
+    /* ★ 新开一局，清空历史记录 */
+  if(PokerStorage.clearHandHistory) PokerStorage.clearHandHistory();
   resetTableDom();
   G.gameMode = mode;
   G.tableMode = lv.key;
@@ -1297,6 +1314,8 @@ function endHandHost(totalPot){
         result: result, delta: delta, pot: totalPot || 0
       });
     } catch(e){ console.warn('save hand history failed', e); }
+      /* ★ 打完一手，实时刷新历史面板（如果打开着） */
+  refreshHistoryPanelsIfOpen();
   }
   render();
   if(G.online.isHost) broadcastFullState();
@@ -2073,6 +2092,8 @@ function endHandAi(totalPot){
       result: result, delta: delta, pot: (totalPot || pot)
     });
   } catch(e){ console.warn('save hand history failed', e); }
+    /* ★ 打完一手，实时刷新历史面板（如果打开着） */
+  refreshHistoryPanelsIfOpen();
   render();
   if(me.chips <= 0){ setTimeout(showRebuy, 800); return; }
   offerShowCards();
@@ -2407,7 +2428,8 @@ function render(){
       chipSide = 'bottom';      /* 中下座位 → 筹码放下方 */
     }
     seat.setAttribute('data-chip-side', chipSide);
-    seat.classList.toggle("folded", !!p.folded || p.seated === false);
+        /* ★ 秀牌时不显示灰暗效果 */
+    seat.classList.toggle("folded", (!!p.folded || p.seated === false) && !p.revealCards);
     seat.classList.toggle("reveal", !!p.revealCards);
     seat.classList.toggle("empty", p.seated === false);
 
@@ -2480,11 +2502,17 @@ function render(){
     }
 
     const cards = seat.querySelector(".seat-cards");
-    let nextCards = [];
+        let nextCards = [];
     let showFace = false;
-    if(p.seated === false || p.folded || p.holeCards.length < 2){ nextCards = [null, null]; }
-    else if(p.revealCards || i === myIndex()){ nextCards = p.holeCards; showFace = true; }
-    else { nextCards = [null, null]; }
+    /* ★ 关键修复：如果玩家已秀牌（revealCards），即使是弃牌状态也显示正面 */
+    if(p.seated === false || p.holeCards.length < 2){
+      nextCards = [null, null];
+    } else if(p.revealCards || i === myIndex()){
+      nextCards = p.holeCards;
+      showFace = true;
+    } else {
+      nextCards = [null, null];
+    }seat.classList.toggle("folded", !!p.folded || p.seated === false);
     const cardSig = (showFace ? 'F:' : 'B:') + cardsSig(nextCards);
     if(cards && seat.getAttribute('data-card-sig') !== cardSig){
       seat.setAttribute('data-card-sig', cardSig);
@@ -3258,6 +3286,32 @@ document.addEventListener("DOMContentLoaded", function(){
       PokerStorage.resetStats();
       renderNumbers();
     }
+  };
+    /* ★ 缩放控制 */
+  let _zoomLevel = parseInt(localStorage.getItem('neon_holdem_zoom') || '100', 10);
+  if(isNaN(_zoomLevel)) _zoomLevel = 100;
+  if(_zoomLevel < 50) _zoomLevel = 50;
+  if(_zoomLevel > 110) _zoomLevel = 110;
+
+  function applyZoom(){
+    const classes = ['zoom-50','zoom-60','zoom-70','zoom-80','zoom-90','zoom-100','zoom-110'];
+    document.body.classList.remove.apply(document.body.classList, classes);
+    document.body.classList.add('zoom-' + _zoomLevel);
+    try { localStorage.setItem('neon_holdem_zoom', String(_zoomLevel)); } catch(e){}
+  }
+  applyZoom();
+
+  const zOut = $("zoomOutBtn");
+  const zIn = $("zoomInBtn");
+  if(zOut) zOut.onclick = function(){
+    _zoomLevel = Math.max(50, _zoomLevel - 10);
+    applyZoom();
+    if(window.PokerAudio) PokerAudio.play('click');
+  };
+  if(zIn) zIn.onclick = function(){
+    _zoomLevel = Math.min(110, _zoomLevel + 10);
+    applyZoom();
+    if(window.PokerAudio) PokerAudio.play('click');
   };
   const fsBtn = $("fullscreenBtn");
   const updateFullscreenState = function(){
