@@ -1,6 +1,6 @@
 /* ====================================================================
    Tapeout Bracelet · Texas Hold'em
-   style.css — 完整版
+   style.css — 精简整理版
    ==================================================================== */
 
 :root{
@@ -101,7 +101,6 @@ button{ font-family:inherit; cursor:pointer; }
 .mode-dot.green{ background:var(--green); }
 .mode-dot.gold{ background:var(--gold); }
 
-/* Hero */
 .hero-card{
   display:grid; grid-template-columns:1fr 1fr; gap:30px;
   padding:32px 36px; border-radius:18px;
@@ -138,8 +137,7 @@ button{ font-family:inherit; cursor:pointer; }
   font-size:38px; line-height:1.15; font-weight:800;
   margin:0 0 12px; letter-spacing:-.5px;
   background:linear-gradient(180deg,#fff,#cbd5e1);
-  -webkit-background-clip:text;
-  background-clip:text;
+  -webkit-background-clip:text; background-clip:text;
   -webkit-text-fill-color:transparent;
 }
 .hero-desc{ font-size:13px; color:var(--text-2); line-height:1.7; margin:0 0 20px; max-width:420px; }
@@ -160,7 +158,6 @@ button{ font-family:inherit; cursor:pointer; }
 }
 .btn-hero-secondary:hover{ background:rgba(0,0,0,.5); border-color:var(--gold); }
 
-/* 钱包卡片 */
 .wallet-card{
   width:100%; max-width:340px;
   padding:16px; background:rgba(0,0,0,.5);
@@ -196,7 +193,7 @@ button{ font-family:inherit; cursor:pointer; }
 .mini-btn.ghost:hover{ color:var(--text); border-color:var(--text-2); }
 .mini-btn.gold{ background:var(--gold); color:#000; }
 
-/* 牌桌卡片网格 */
+/* 牌桌卡片 */
 .table-grid{
   display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
   gap:16px; margin-bottom:24px;
@@ -316,7 +313,7 @@ button{ font-family:inherit; cursor:pointer; }
 .lobby-footer .muted{ color:var(--muted); }
 
 /* ====================================================================
-   规则页
+   规则页 / 我的数据
    ==================================================================== */
 .rules-container{ max-width:1080px; margin:0 auto; padding:32px 20px; }
 .rule-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; margin-top:20px; }
@@ -358,9 +355,6 @@ button{ font-family:inherit; cursor:pointer; }
   border-top:1px solid var(--border); padding-top:14px;
 }
 
-/* ====================================================================
-   我的数据
-   ==================================================================== */
 .numbers-container{ max-width:1180px; margin:0 auto; padding:32px 20px; }
 .numbers-header{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:20px; }
 .numbers-sub{ font-size:12px; color:var(--muted); }
@@ -460,7 +454,17 @@ button{ font-family:inherit; cursor:pointer; }
 }
 .btn-fullscreen:hover{ background:rgba(251,191,36,.15); }
 
-/* 桌面端三栏 */
+.btn-zoom{
+  background:transparent; color:var(--gold);
+  border:1px solid var(--gold);
+  padding:5px 9px; border-radius:6px;
+  font-size:14px; font-weight:800; line-height:1;
+  min-width:28px; transition:all .15s;
+}
+.btn-zoom:hover{ background:rgba(251,191,36,.15); }
+.btn-zoom:active{ transform:scale(.94); }
+
+/* 桌面三栏 */
 .game-layout{
   display:grid; grid-template-columns:240px minmax(0,1fr) 340px;
   gap:14px; padding:14px; max-width:1700px; margin:0 auto; align-items:start;
@@ -485,7 +489,6 @@ button{ font-family:inherit; cursor:pointer; }
 
 /* 牌桌 */
 .table-area{ position:relative; padding-top:48px; }
-
 .dealer-seat{
   position:absolute; top:0; left:50%; transform:translateX(-50%);
   display:flex; flex-direction:column; align-items:center; z-index:6;
@@ -546,9 +549,8 @@ button{ font-family:inherit; cursor:pointer; }
 @keyframes sh2{0%,100%{transform:translate(0,0);}50%{transform:translate(0,-10px);}}
 @keyframes sh3{0%,100%{transform:translate(0,0);}25%{transform:translate(14px,6px) rotate(12deg);}75%{transform:translate(-14px,-6px) rotate(-12deg);}}
 
-/* 座位层 */
+/* 座位 */
 .seats-layer{ position:absolute; inset:0; pointer-events:none; overflow:visible; }
-
 .seat{
   position:absolute; transform:translate(-50%,-50%);
   width:150px; padding:9px 10px;
@@ -574,7 +576,6 @@ button{ font-family:inherit; cursor:pointer; }
   color:#94a3b8; font-size:12px; font-weight:600;
 }
 
-/* 座位高亮 */
 .seat.active{
   border-color:var(--gold) !important;
   box-shadow:0 0 24px rgba(251,191,36,.5),0 8px 20px rgba(0,0,0,.6) !important;
@@ -654,6 +655,28 @@ button{ font-family:inherit; cursor:pointer; }
 .seat .not-ready-badge{
   background:rgba(148,163,184,.25); color:#cbd5e1;
   border:1px solid rgba(148,163,184,.35);
+}
+
+/* 主动秀牌：蓝色高亮 */
+.seat.intent-reveal{
+  opacity:1 !important;
+  filter:none !important;
+  border-color:#3b82f6 !important;
+  box-shadow:
+    0 0 24px rgba(59,130,246,.7),
+    0 0 48px rgba(59,130,246,.35),
+    0 8px 20px rgba(0,0,0,.6) !important;
+  animation:intentRevealPulse 1.2s ease-in-out;
+}
+.seat.intent-reveal .mini-card{
+  border-color:#60a5fa !important;
+  box-shadow:0 0 10px rgba(59,130,246,.7),0 2px 6px rgba(0,0,0,.5) !important;
+}
+.seat.intent-reveal .seat-name{ color:#93c5fd !important; }
+@keyframes intentRevealPulse{
+  0%{ transform:translate(-50%,-50%) scale(1); }
+  40%{ transform:translate(-50%,-50%) scale(1.08); }
+  100%{ transform:translate(-50%,-50%) scale(1); }
 }
 
 .card{
@@ -861,7 +884,7 @@ button{ font-family:inherit; cursor:pointer; }
 }
 
 /* ====================================================================
-   等待栏
+   等待栏 / 提示
    ==================================================================== */
 .waiting-bar{
   position:absolute; left:50%; bottom:18px; transform:translateX(-50%);
@@ -907,7 +930,7 @@ button{ font-family:inherit; cursor:pointer; }
 .tie-display.hidden{ display:none !important; }
 
 /* ====================================================================
-   ★ 筹码堆 - 座位内（默认桌面布局）
+   筹码堆
    ==================================================================== */
 .chip-stack-wrap{
   display:flex; flex-direction:row; align-items:flex-end;
@@ -925,7 +948,6 @@ button{ font-family:inherit; cursor:pointer; }
   border:1px solid rgba(0,0,0,.55);
   box-shadow:0 1px 1px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.28);
 }
-/* 面额配色 */
 .chip-piece.chip-5000{ background:linear-gradient(180deg,#fde68a 0%,#f59e0b 45%,#b45309 100%); }
 .chip-piece.chip-1000{ background:linear-gradient(180deg,#fef3c7 0%,#fcd34d 45%,#d97706 100%); }
 .chip-piece.chip-500{ background:linear-gradient(180deg,#e9d5ff 0%,#a855f7 45%,#6d28d9 100%); }
@@ -942,158 +964,113 @@ button{ font-family:inherit; cursor:pointer; }
   text-shadow:0 0 4px rgba(0,0,0,.9);
 }
 
-/* ====================================================================
-   ★ 底池筹码：分开堆叠 + 挪到牌桌左侧空白区
-   ==================================================================== */
+/* 底池筹码 */
 .pot-chips{
-  position: absolute;
-    right: calc(50% + 70px);
-  top: 50%;
-  transform: translateY(calc(-50% - 60px));
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 8px;
-  margin: 0;
-  padding: 8px 12px 16px 12px;
-  background: rgba(0,0,0,.55);
-  border: 1px solid rgba(251,191,36,.35);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,.7);
-  min-height: auto;
-  max-width: 180px;
-  pointer-events: none;
-  z-index: 5;
+  position:absolute;
+  right:calc(50% + 70px);
+  top:50%;
+  transform:translateY(calc(-50% - 60px));
+  display:flex; flex-direction:row;
+  align-items:flex-end; justify-content:center;
+  gap:8px; margin:0;
+  padding:8px 12px 16px 12px;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(251,191,36,.35);
+  border-radius:12px;
+  box-shadow:0 4px 16px rgba(0,0,0,.7);
+  min-height:auto; max-width:180px;
+  pointer-events:none; z-index:5;
 }
-.pot-chips.empty{ display: none !important; }
-
+.pot-chips.empty{ display:none !important; }
 .pot-chips .pot-chips-inner,
 .pot-chips .chip-stack-wrap{
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 8px;
+  display:flex; flex-direction:row;
+  align-items:flex-end; justify-content:center;
+  gap:8px;
 }
 .pot-chips .chip-column{
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  width: 22px;
-  padding: 0 2px;
-  border-right: 1px dashed rgba(255,255,255,.12);
-  position: relative;
+  display:flex; flex-direction:column-reverse;
+  align-items:center;
+  width:22px; padding:0 2px;
+  border-right:1px dashed rgba(255,255,255,.12);
+  position:relative;
 }
-.pot-chips .chip-column:last-child{ border-right: none; }
+.pot-chips .chip-column:last-child{ border-right:none; }
 .pot-chips .chip-piece{
-  width: 22px;
-  height: 5px;
-  margin-top: -2px;
-  border-radius: 50%;
-  border: 1px solid rgba(0,0,0,.7);
+  width:22px; height:5px; margin-top:-2px;
+  border-radius:50%; border:1px solid rgba(0,0,0,.7);
   box-shadow:
     0 1px 2px rgba(0,0,0,.7),
     inset 0 1px 0 rgba(255,255,255,.35),
     inset 0 -1px 0 rgba(0,0,0,.4);
 }
 .pot-chips .chip-label{
-  position: absolute;
-  bottom: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 9px;
-  font-weight: 800;
-  color: #fde68a;
-  text-shadow: 0 0 3px #000, 0 0 3px #000;
-  white-space: nowrap;
-  letter-spacing: -0.3px;
+  position:absolute; bottom:-12px; left:50%;
+  transform:translateX(-50%);
+  font-size:9px; font-weight:800; color:#fde68a;
+  text-shadow:0 0 3px #000, 0 0 3px #000;
+  white-space:nowrap; letter-spacing:-0.3px;
 }
 
-/* ====================================================================
-   ★ 桌面端 / 手机竖屏：座位筹码浮到外侧
-   ==================================================================== */
+/* 桌面/手机竖屏：座位筹码浮到外侧 */
 body.is-desktop .seat,
-body.is-mobile.orientation-portrait .seat{ overflow: visible; }
-
+body.is-mobile.orientation-portrait .seat{ overflow:visible; }
 body.is-desktop .seat .chip-stack-wrap,
 body.is-mobile.orientation-portrait .seat .chip-stack-wrap{
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 3px;
-  margin: 0;
-  padding: 4px 8px 6px 8px;
-  background: rgba(0,0,0,.92);
-  border: 1px solid rgba(251,191,36,.55);
-  border-radius: 10px;
-  box-shadow: 0 3px 12px rgba(0,0,0,.9), 0 0 8px rgba(251,191,36,.3);
-  z-index: 8;
-  min-height: auto;
-  max-width: 140px;
-  pointer-events: none;
-  white-space: nowrap;
+  position:absolute;
+  display:flex; flex-direction:row;
+  align-items:flex-end; justify-content:center;
+  gap:3px; margin:0;
+  padding:4px 8px 6px 8px;
+  background:rgba(0,0,0,.92);
+  border:1px solid rgba(251,191,36,.55);
+  border-radius:10px;
+  box-shadow:0 3px 12px rgba(0,0,0,.9),0 0 8px rgba(251,191,36,.3);
+  z-index:8; min-height:auto; max-width:140px;
+  pointer-events:none; white-space:nowrap;
 }
-
-/* 右侧 */
 body.is-desktop .seat[data-chip-side="right"] .chip-stack-wrap,
 body.is-mobile.orientation-portrait .seat[data-chip-side="right"] .chip-stack-wrap{
-  left: 100%; right: auto; top: 50%; bottom: auto;
-  transform: translate(10px, -50%);
+  left:100%; right:auto; top:50%; bottom:auto;
+  transform:translate(10px, -50%);
 }
-/* 左侧 */
 body.is-desktop .seat[data-chip-side="left"] .chip-stack-wrap,
 body.is-mobile.orientation-portrait .seat[data-chip-side="left"] .chip-stack-wrap{
-  right: 100%; left: auto; top: 50%; bottom: auto;
-  transform: translate(-10px, -50%);
+  right:100%; left:auto; top:50%; bottom:auto;
+  transform:translate(-10px, -50%);
 }
-/* 上方 */
 body.is-desktop .seat[data-chip-side="top"] .chip-stack-wrap,
 body.is-mobile.orientation-portrait .seat[data-chip-side="top"] .chip-stack-wrap{
-  bottom: 100%; top: auto; left: 50%; right: auto;
-  transform: translate(-50%, -10px);
+  bottom:100%; top:auto; left:50%; right:auto;
+  transform:translate(-50%, -10px);
 }
-/* 下方 */
 body.is-desktop .seat[data-chip-side="bottom"] .chip-stack-wrap,
 body.is-mobile.orientation-portrait .seat[data-chip-side="bottom"] .chip-stack-wrap{
-  top: 100%; bottom: auto; left: 50%; right: auto;
-  transform: translate(-50%, 10px);
+  top:100%; bottom:auto; left:50%; right:auto;
+  transform:translate(-50%, 10px);
 }
-
-/* 自己：座位正上方（往上多留空间，不压座位内容） */
 body.is-desktop .seat.me .chip-stack-wrap,
 body.is-mobile.orientation-portrait .seat.me .chip-stack-wrap{
-  position: absolute !important;
-  left: 50% !important;
-  right: auto !important;
-  top: auto !important;
-  bottom: calc(100% + 44px) !important;
-  transform: translateX(-50%) !important;
-  z-index: 20 !important;
-  margin: 0 !important;
+  position:absolute !important;
+  left:50% !important; right:auto !important;
+  top:auto !important;
+  bottom:calc(100% + 44px) !important;
+  transform:translateX(-50%) !important;
+  z-index:20 !important; margin:0 !important;
 }
-
 body.is-desktop .seat .chip-column,
-body.is-mobile.orientation-portrait .seat .chip-column{
-  width: 16px;
-}
+body.is-mobile.orientation-portrait .seat .chip-column{ width:16px; }
 body.is-desktop .seat .chip-piece,
 body.is-mobile.orientation-portrait .seat .chip-piece{
-  width: 16px;
-  height: 4px;
-  margin-top: -1.2px;
+  width:16px; height:4px; margin-top:-1.2px;
 }
 body.is-desktop .seat .chip-label,
 body.is-mobile.orientation-portrait .seat .chip-label{
-  font-size: 8px;
-  bottom: -10px;
+  font-size:8px; bottom:-10px;
 }
-
 body.is-desktop .seat .chip-stack-wrap.empty,
 body.is-mobile.orientation-portrait .seat .chip-stack-wrap.empty{
-  display: none;
+  display:none;
 }
 
 /* ====================================================================
@@ -1112,6 +1089,7 @@ body.is-mobile.orientation-portrait .seat .chip-stack-wrap.empty{
 }
 .chat-fab.hidden{ display:none !important; }
 
+/* 聊天面板：默认完全隐藏，只有点 fab 才显示（.hidden 已被全局控制） */
 .chat-panel{
   position:fixed; right:16px; bottom:86px;
   width:300px; max-width:calc(100vw - 32px);
@@ -1123,19 +1101,39 @@ body.is-mobile.orientation-portrait .seat .chip-stack-wrap.empty{
   display:flex; flex-direction:column;
   overflow:hidden;
   box-shadow:0 12px 40px rgba(0,0,0,.7);
+  pointer-events:auto;
 }
 .chat-panel.hidden{ display:none !important; }
+
 .chat-panel-head{
   display:flex; justify-content:space-between; align-items:center;
   padding:8px 12px; background:#000;
   border-bottom:1px solid var(--border);
   font-size:13px; font-weight:700; color:var(--gold);
+  pointer-events:auto;
 }
+
+/* 关闭按钮：大点击区 + 强制可点 */
 .chat-close{
-  background:transparent; border:none;
-  color:var(--text-2); font-size:20px;
-  line-height:1; cursor:pointer; padding:0 4px;
+  pointer-events:auto !important;
+  z-index:10 !important;
+  min-width:32px !important;
+  min-height:32px !important;
+  padding:6px 10px !important;
+  font-size:22px !important;
+  font-weight:400 !important;
+  line-height:1 !important;
+  background:transparent !important;
+  border:none !important;
+  color:var(--text-2) !important;
+  cursor:pointer !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
 }
+.chat-close:hover{ color:var(--gold) !important; }
+.chat-close:active{ transform:scale(.92) !important; }
+
 .chat-messages{
   flex:1; overflow-y:auto;
   padding:8px 12px; font-size:12px;
@@ -1145,20 +1143,30 @@ body.is-mobile.orientation-portrait .seat .chip-stack-wrap.empty{
 .chat-msg .chat-name{ color:var(--gold); font-weight:700; margin-right:6px; }
 .chat-msg.self .chat-name{ color:#10b981; }
 .chat-msg .chat-text{ color:var(--text); word-break:break-word; }
+
+/* 快捷话术：固定 4 列，手机端也要显示 */
 .chat-quick{
-  display:grid; grid-template-columns:repeat(4,1fr);
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
   gap:4px; padding:8px;
   border-top:1px solid var(--border);
+  flex-shrink:0;
 }
 .chat-quick button{
   padding:7px 4px; font-size:12px;
   border-radius:6px; border:1px solid var(--border-2);
   background:rgba(255,255,255,.04); color:var(--text);
   cursor:pointer;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
+.chat-quick button:hover{ background:rgba(251,191,36,.15); border-color:var(--gold); color:var(--gold); }
+
 .chat-input-row{
   display:flex; gap:6px; padding:8px;
   border-top:1px solid var(--border);
+  flex-shrink:0;
 }
 .chat-input-row input{
   flex:1; min-width:0; padding:7px 10px;
@@ -1289,18 +1297,14 @@ body.is-mobile .table-card,
 body.is-mobile .room-item{
   touch-action:manipulation;
 }
-
 body.is-mobile .topbar{ padding:6px 10px; gap:6px; }
 body.is-mobile .topbar-left{ gap:6px; }
 body.is-mobile .logo{ font-size:11px; letter-spacing:0; }
 body.is-mobile .nav-link{ padding:4px 8px; font-size:12px; }
 body.is-mobile .lang-select{
-  display: block !important;
-  padding: 3px 6px;
-  font-size: 10px;
-  min-width: 60px;
-  height: 26px;
-  border-radius: 6px;
+  display:block !important;
+  padding:3px 6px; font-size:10px;
+  min-width:60px; height:26px; border-radius:6px;
 }
 body.is-mobile .status-pill{ padding:3px 7px; font-size:10px; }
 body.is-mobile .btn-wallet{ padding:5px 10px; font-size:11px; }
@@ -1348,50 +1352,38 @@ body.is-mobile .session-row{
 }
 body.is-mobile .session-row > span:nth-child(n+5){ display:none; }
 
-/* 规则/FAQ */
+/* 规则 */
 body.is-mobile .rules-container{ padding:16px 12px; }
 body.is-mobile .rule-grid{ grid-template-columns:1fr; gap:10px; }
 body.is-mobile .faq-item summary{ padding:12px 14px; font-size:12px; }
 body.is-mobile .faq-item p{ font-size:12px; padding:0 14px 12px; }
 
 /* ====================================================================
-   ★ 手机横屏：唯一布局（flex 左右分栏）
+   手机横屏：核心布局
    ==================================================================== */
 
 /* 隐藏顶部网页导航栏（进入游戏后） */
-body.is-mobile.orientation-landscape.game-active .topbar{
-  display: none !important;
-}
+body.is-mobile.orientation-landscape.game-active .topbar{ display:none !important; }
 
 body.is-mobile.orientation-landscape{
-  position:fixed;
-  inset:0;
-  width:100vw;
-  height:100vh;
-  height:100dvh;
-  overflow:hidden;
-  margin:0; padding:0;
+  position:fixed; inset:0;
+  width:100vw; height:100vh; height:100dvh;
+  overflow:hidden; margin:0; padding:0;
 }
 
 body.is-mobile.orientation-landscape #gameScreen{
-  position:fixed;
-  inset:0;
-  width:100vw;
-  height:100vh;
-  height:100dvh;
+  position:fixed; inset:0;
+  width:100vw; height:100vh; height:100dvh;
   overflow:hidden;
-  display:flex;
-  flex-direction:column;
+  display:flex; flex-direction:column;
   padding:0; margin:0;
 }
 
 body.is-mobile.orientation-landscape #gameScreen .game-topbar{
   flex-shrink:0;
   height:36px;
-  padding:4px 8px;
-  gap:6px;
-  display:flex;
-  align-items:center;
+  padding:4px 8px; gap:6px;
+  display:flex; align-items:center;
   background:#000;
   border-bottom:1px solid var(--border);
 }
@@ -1408,30 +1400,40 @@ body.is-mobile.orientation-landscape #gameScreen .stage-pill{
   font-size:10px; padding:2px 6px;
 }
 body.is-mobile.orientation-landscape #gameScreen #gameWalletPill{ display:none; }
-body.is-mobile.orientation-landscape #gameScreen .game-right{ margin-left:auto; gap:4px; }
-body.is-mobile.orientation-landscape #gameScreen .btn-fullscreen{
-  padding:4px 8px; font-size:12px;
+body.is-mobile.orientation-landscape #gameScreen .game-right{ margin-left:auto; gap:3px; display:flex; align-items:center; }
+body.is-mobile.orientation-landscape #gameScreen .btn-fullscreen{ padding:4px 8px; font-size:12px; }
+body.is-mobile.orientation-landscape #gameScreen .btn-zoom{
+  padding:3px 7px !important;
+  font-size:12px !important;
+  min-width:22px !important;
+}
+
+/* 返回大厅按钮红色警告 */
+body.is-mobile.orientation-landscape #gameScreen .btn-back{
+  background:rgba(239,68,68,.15) !important;
+  border-color:rgba(239,68,68,.7) !important;
+  color:#fca5a5 !important;
+  font-weight:800 !important;
+  padding:5px 10px !important;
+  font-size:11px !important;
+}
+body.is-mobile.orientation-landscape #gameScreen .btn-back:active{
+  background:rgba(239,68,68,.4) !important;
 }
 
 body.is-mobile.orientation-landscape #gameScreen .game-layout{
-  display:flex;
-  flex:1;
+  display:flex; flex:1;
   min-height:0;
-  width:100%;
-  margin:0; padding:0;
-  gap:0;
-  position:relative;
+  width:100%; margin:0; padding:0;
+  gap:0; position:relative;
 }
 
 body.is-mobile.orientation-landscape #gameScreen .side-left{ display:none; }
 
 body.is-mobile.orientation-landscape #gameScreen .table-area{
-  flex:1;
-  min-width:0;
+  flex:1; min-width:0;
   position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display:flex; align-items:center; justify-content:center;
   padding:26px 6px 34px;
   overflow:hidden;
 }
@@ -1455,22 +1457,23 @@ body.is-mobile.orientation-landscape #gameScreen .dealer-avatar{
 }
 body.is-mobile.orientation-landscape #gameScreen .dealer-name{ font-size:9px; }
 
+/* 右侧操作栏 */
 body.is-mobile.orientation-landscape #gameScreen .side-right{
-  width:200px;
-  min-width:180px;
-  max-width:32vw;
+  width:200px; min-width:180px; max-width:32vw;
   flex-shrink:0;
-  padding:6px 8px;
-  margin:0;
+  padding:6px 8px; margin:0;
   border-left:1px solid rgba(251,191,36,.35);
   border-radius:0;
-  overflow-y:auto;
-  overflow-x:hidden;
-  display:flex;
-  flex-direction:column;
+  overflow-y:auto; overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  display:flex; flex-direction:column;
   gap:4px;
 }
-
+body.is-mobile.orientation-landscape #gameScreen .side-right::-webkit-scrollbar{ width:4px; }
+body.is-mobile.orientation-landscape #gameScreen .side-right::-webkit-scrollbar-thumb{
+  background:rgba(251,191,36,.5); border-radius:2px;
+}
 body.is-mobile.orientation-landscape #gameScreen .hand-panel-head{ font-size:10px; }
 body.is-mobile.orientation-landscape #gameScreen .hand-label{ font-size:10px; }
 body.is-mobile.orientation-landscape #gameScreen .hand-bem{ font-size:10px; }
@@ -1488,10 +1491,7 @@ body.is-mobile.orientation-landscape #gameScreen .hand-cards-large .card .v{
 body.is-mobile.orientation-landscape #gameScreen .hand-cards-large .card .s{
   font-size:22px; font-weight:900;
 }
-
-body.is-mobile.orientation-landscape #gameScreen .turn-timer{
-  padding:3px 6px; gap:5px;
-}
+body.is-mobile.orientation-landscape #gameScreen .turn-timer{ padding:3px 6px; gap:5px; }
 body.is-mobile.orientation-landscape #gameScreen .timer-bar{ height:5px; }
 body.is-mobile.orientation-landscape #gameScreen .timer-text{
   font-size:11px; min-width:26px;
@@ -1500,8 +1500,7 @@ body.is-mobile.orientation-landscape #gameScreen .timer-text{
 body.is-mobile.orientation-landscape #gameScreen .human-actions{
   display:grid;
   grid-template-columns:repeat(3, 1fr);
-  gap:4px;
-  margin-top:0;
+  gap:4px; margin-top:0;
 }
 body.is-mobile.orientation-landscape #gameScreen .human-actions button{
   padding:8px 2px;
@@ -1512,10 +1511,8 @@ body.is-mobile.orientation-landscape #gameScreen .human-actions button{
 }
 
 body.is-mobile.orientation-landscape #gameScreen .raise-panel{
-  padding:6px;
-  gap:4px;
-  margin-top:4px;
-  border-radius:8px;
+  padding:6px; gap:4px;
+  margin-top:4px; border-radius:8px;
 }
 body.is-mobile.orientation-landscape #gameScreen .raise-amount-display{ font-size:18px; }
 body.is-mobile.orientation-landscape #gameScreen .raise-input-row{ margin-bottom:3px; gap:4px; }
@@ -1528,36 +1525,27 @@ body.is-mobile.orientation-landscape #gameScreen .raise-input-row .raise-input{
 body.is-mobile.orientation-landscape #gameScreen .raise-slider{ height:4px; }
 body.is-mobile.orientation-landscape #gameScreen .raise-minmax{ font-size:9px; }
 body.is-mobile.orientation-landscape #gameScreen .raise-presets{
-  grid-template-columns:repeat(4, 1fr);
-  gap:3px;
+  grid-template-columns:repeat(4, 1fr); gap:3px;
 }
 body.is-mobile.orientation-landscape #gameScreen .raise-presets button{
-  padding:5px 2px;
-  font-size:10px;
-  min-height:26px;
-  border-radius:5px;
+  padding:5px 2px; font-size:10px;
+  min-height:26px; border-radius:5px;
 }
 body.is-mobile.orientation-landscape #gameScreen .raise-buttons button{
   padding:7px; font-size:11px;
 }
-
 body.is-mobile.orientation-landscape #gameScreen .show-cards-btn,
 body.is-mobile.orientation-landscape #gameScreen .next-btn{
-  padding:7px 16px;
-  font-size:11px;
-  margin-top:4px;
+  padding:7px 16px; font-size:11px; margin-top:4px;
 }
 
-/* 手机横屏座位紧凑 */
+/* 座位紧凑 */
 body.is-mobile.orientation-landscape #gameScreen .seat{
-  width:66px;
-  padding:3px 5px;
-  border-radius:8px;
-  border-width:1px;
+  width:66px; padding:3px 5px;
+  border-radius:8px; border-width:1px;
 }
 body.is-mobile.orientation-landscape #gameScreen .seat.me{
-  width:78px;
-  border-width:2px;
+  width:78px; border-width:2px;
 }
 body.is-mobile.orientation-landscape #gameScreen .seat-head{
   gap:4px; margin-bottom:2px;
@@ -1583,8 +1571,7 @@ body.is-mobile.orientation-landscape #gameScreen .seat-cards{
   gap:2px; margin-top:3px;
 }
 body.is-mobile.orientation-landscape #gameScreen .mini-card{
-  width:13px; height:19px;
-  border-radius:3px;
+  width:13px; height:19px; border-radius:3px;
 }
 body.is-mobile.orientation-landscape #gameScreen .mini-card::after{ inset:2px; }
 body.is-mobile.orientation-landscape #gameScreen .mini-card.face .v{
@@ -1614,86 +1601,80 @@ body.is-mobile.orientation-landscape #gameScreen .seat.reveal .mini-card.face .s
 
 /* 手机横屏：座位筹码浮到外侧 */
 body.is-mobile.orientation-landscape #gameScreen .seat .chip-stack-wrap{
-  position: absolute !important;
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: flex-end !important;
-  justify-content: center !important;
-  gap: 2px !important;
-  margin: 0 !important;
-  padding: 3px 5px 5px 5px !important;
-  background: rgba(0,0,0,.92) !important;
-  border: 1px solid rgba(251,191,36,.55) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,.9), 0 0 6px rgba(251,191,36,.25) !important;
-  z-index: 8 !important;
-  min-height: auto !important;
-  max-width: 90px !important;
-  pointer-events: none !important;
-  white-space: nowrap !important;
+  position:absolute !important;
+  display:flex !important;
+  flex-direction:row !important;
+  align-items:flex-end !important;
+  justify-content:center !important;
+  gap:2px !important;
+  margin:0 !important;
+  padding:3px 5px 5px 5px !important;
+  background:rgba(0,0,0,.92) !important;
+  border:1px solid rgba(251,191,36,.55) !important;
+  border-radius:8px !important;
+  box-shadow:0 2px 10px rgba(0,0,0,.9),0 0 6px rgba(251,191,36,.25) !important;
+  z-index:8 !important;
+  min-height:auto !important;
+  max-width:90px !important;
+  pointer-events:none !important;
+  white-space:nowrap !important;
 }
-
 body.is-mobile.orientation-landscape #gameScreen .seat[data-chip-side="right"] .chip-stack-wrap{
-  left: 100% !important; right: auto !important;
-  top: 50% !important; bottom: auto !important;
-  transform: translate(6px, -50%) !important;
+  left:100% !important; right:auto !important;
+  top:50% !important; bottom:auto !important;
+  transform:translate(6px, -50%) !important;
 }
 body.is-mobile.orientation-landscape #gameScreen .seat[data-chip-side="left"] .chip-stack-wrap{
-  right: 100% !important; left: auto !important;
-  top: 50% !important; bottom: auto !important;
-  transform: translate(-6px, -50%) !important;
+  right:100% !important; left:auto !important;
+  top:50% !important; bottom:auto !important;
+  transform:translate(-6px, -50%) !important;
 }
 body.is-mobile.orientation-landscape #gameScreen .seat[data-chip-side="top"] .chip-stack-wrap{
-  bottom: 100% !important; top: auto !important;
-  left: 50% !important; right: auto !important;
-  transform: translate(-50%, -6px) !important;
+  bottom:100% !important; top:auto !important;
+  left:50% !important; right:auto !important;
+  transform:translate(-50%, -6px) !important;
 }
 body.is-mobile.orientation-landscape #gameScreen .seat[data-chip-side="bottom"] .chip-stack-wrap{
-  top: 100% !important; bottom: auto !important;
-  left: 50% !important; right: auto !important;
-  transform: translate(-50%, 6px) !important;
+  top:100% !important; bottom:auto !important;
+  left:50% !important; right:auto !important;
+  transform:translate(-50%, 6px) !important;
 }
-
-/* 自己：座位正上方（往上多留空间） */
 body.is-mobile.orientation-landscape #gameScreen .seat.me .chip-stack-wrap,
 body.is-mobile.orientation-landscape #gameScreen .seat[data-chip-side="self"] .chip-stack-wrap,
 body.is-mobile.orientation-landscape #gameScreen .seat[data-pid="0"] .chip-stack-wrap{
-  position: absolute !important;
-  left: 50% !important;
-  right: auto !important;
-  top: auto !important;
-  bottom: calc(100% + 40px) !important;
-  transform: translateX(-50%) !important;
-  margin: 0 !important;
-  display: flex !important;
-  z-index: 12 !important;
+  position:absolute !important;
+  left:50% !important; right:auto !important;
+  top:auto !important;
+  bottom:calc(100% + 40px) !important;
+  transform:translateX(-50%) !important;
+  margin:0 !important;
+  display:flex !important;
+  z-index:12 !important;
 }
-
 body.is-mobile.orientation-landscape #gameScreen .seat .chip-column{
-  width: 9px !important;
-  display: flex !important;
-  flex-direction: column-reverse !important;
-  align-items: center !important;
+  width:9px !important;
+  display:flex !important;
+  flex-direction:column-reverse !important;
+  align-items:center !important;
 }
 body.is-mobile.orientation-landscape #gameScreen .seat .chip-piece{
-  width: 9px !important;
-  height: 3px !important;
-  margin-top: -0.5px !important;
-  border-width: 0.5px !important;
-  border-radius: 50% !important;
+  width:9px !important; height:3px !important;
+  margin-top:-0.5px !important;
+  border-width:0.5px !important;
+  border-radius:50% !important;
 }
 body.is-mobile.orientation-landscape #gameScreen .seat .chip-label{
-  font-size: 6px !important;
-  bottom: -8px !important;
-  color: #fbbf24 !important;
-  letter-spacing: -0.3px !important;
-  text-shadow: 0 0 2px #000 !important;
+  font-size:6px !important;
+  bottom:-8px !important;
+  color:#fbbf24 !important;
+  letter-spacing:-0.3px !important;
+  text-shadow:0 0 2px #000 !important;
 }
 body.is-mobile.orientation-landscape #gameScreen .seat .chip-stack-wrap.empty{
-  display: none !important;
+  display:none !important;
 }
 
-/* 手机横屏公共牌 */
+/* 公共牌 */
 body.is-mobile.orientation-landscape #gameScreen .board-cards{
   gap:3px; min-height:34px;
 }
@@ -1709,7 +1690,7 @@ body.is-mobile.orientation-landscape #gameScreen .board-cards .card .s{
   font-size:16px; font-weight:900;
 }
 
-/* 手机横屏底池显示 */
+/* 底池显示 */
 body.is-mobile.orientation-landscape #gameScreen .pot-display{
   font-size:11px; gap:3px;
 }
@@ -1717,50 +1698,40 @@ body.is-mobile.orientation-landscape #gameScreen .pot-label{ font-size:10px; }
 body.is-mobile.orientation-landscape #gameScreen .pot-value{ font-size:14px; }
 body.is-mobile.orientation-landscape #gameScreen .pot-side{ font-size:10px; }
 
-/* 手机横屏底池筹码：挪到 table-center 左侧 */
+/* 底池筹码 */
 body.is-mobile.orientation-landscape #gameScreen .pot-chips{
-  position: absolute;
-   right: calc(50% + 55px);
-  top: 50%;
-  transform: translateY(calc(-50% - 40px));
-  padding: 5px 8px 11px 8px;
-  gap: 5px;
-  max-width: 120px;
-  border-radius: 8px;
-  margin: 0;
-  min-height: auto;
+  position:absolute;
+  right:calc(50% + 55px);
+  top:50%;
+  transform:translateY(calc(-50% - 40px));
+  padding:5px 8px 11px 8px;
+  gap:5px; max-width:120px;
+  border-radius:8px;
+  margin:0; min-height:auto;
 }
 body.is-mobile.orientation-landscape #gameScreen .pot-chips .pot-chips-inner,
-body.is-mobile.orientation-landscape #gameScreen .pot-chips .chip-stack-wrap{
-  gap: 5px;
-}
+body.is-mobile.orientation-landscape #gameScreen .pot-chips .chip-stack-wrap{ gap:5px; }
 body.is-mobile.orientation-landscape #gameScreen .pot-chips .chip-column{
-  width: 14px;
-  padding: 0 1px;
+  width:14px; padding:0 1px;
 }
 body.is-mobile.orientation-landscape #gameScreen .pot-chips .chip-piece{
-  width: 14px;
-  height: 3px;
-  margin-top: -1.2px;
-  border-width: 0.5px;
+  width:14px; height:3px;
+  margin-top:-1.2px; border-width:0.5px;
 }
 body.is-mobile.orientation-landscape #gameScreen .pot-chips .chip-label{
-  font-size: 7px;
-  bottom: -9px;
+  font-size:7px; bottom:-9px;
 }
-
 body.is-mobile.orientation-landscape #gameScreen .table-center{
   width:60%; gap:4px;
 }
 
-/* 手机横屏等待栏 */
+/* 等待栏 */
 body.is-mobile.orientation-landscape #gameScreen .waiting-bar{
   position:absolute;
   left:8px; right:8px; bottom:6px;
   top:auto; transform:none;
   z-index:60;
-  padding:5px 10px;
-  font-size:10px;
+  padding:5px 10px; font-size:10px;
   justify-content:space-between;
 }
 body.is-mobile.orientation-landscape #gameScreen .waiting-bar .waiting-room{
@@ -1772,14 +1743,12 @@ body.is-mobile.orientation-landscape #gameScreen .waiting-bar .waiting-info{
 body.is-mobile.orientation-landscape #gameScreen .waiting-bar .mini-btn{
   padding:4px 8px; font-size:10px;
 }
-
 body.is-mobile.orientation-landscape #gameScreen .next-hand-toast{
   font-size:14px; padding:8px 14px; min-width:100px;
 }
 body.is-mobile.orientation-landscape #gameScreen .tie-display{
   font-size:18px; padding:8px 20px;
 }
-
 body.is-mobile.orientation-landscape #gameScreen .chat-bubble{
   font-size:10px; padding:3px 8px;
   max-width:100px; border-radius:10px;
@@ -1788,6 +1757,7 @@ body.is-mobile.orientation-landscape #gameScreen .chat-bubble::after{
   border-width:4px;
 }
 
+/* 手机横屏：聊天按钮 + 面板 */
 body.is-mobile.orientation-landscape .chat-fab{
   right:calc(200px + 8px);
   bottom:8px;
@@ -1798,20 +1768,69 @@ body.is-mobile.orientation-landscape .chat-panel{
   right:calc(200px + 8px);
   bottom:52px;
   width:240px;
-  max-height:60vh;
+  max-height:55vh !important;
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
 }
-body.is-mobile.orientation-landscape .chat-quick button{ font-size:10px; padding:5px 2px; }
+body.is-mobile.orientation-landscape .chat-panel.hidden{ display:none !important; }
+
+/* 手机横屏：聊天消息区可滚动 */
+body.is-mobile.orientation-landscape .chat-panel .chat-messages{
+  flex:1 !important;
+  min-height:60px !important;
+  overflow-y:auto !important;
+  -webkit-overflow-scrolling:touch !important;
+}
+/* ★ 快捷话术：手机端也要显示，固定在底部 */
+body.is-mobile.orientation-landscape .chat-panel .chat-quick{
+  flex-shrink:0 !important;
+  display:grid !important;
+  grid-template-columns:repeat(4,1fr) !important;
+  gap:3px !important;
+  padding:6px !important;
+}
+body.is-mobile.orientation-landscape .chat-panel .chat-quick button{
+  font-size:10px !important;
+  padding:6px 2px !important;
+  min-height:28px !important;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+body.is-mobile.orientation-landscape .chat-panel .chat-input-row{
+  flex-shrink:0 !important;
+  position:sticky !important;
+  bottom:0 !important;
+  background:#131822 !important;
+  border-top:1px solid var(--border) !important;
+  padding:6px !important;
+}
+body.is-mobile.orientation-landscape .chat-panel .chat-input-row input{
+  font-size:11px !important;
+  padding:6px 8px !important;
+}
+body.is-mobile.orientation-landscape .chat-panel .chat-input-row button{
+  font-size:11px !important;
+  padding:6px 12px !important;
+}
+
 body.is-mobile.orientation-landscape .ingame-history{
   width:60vw; max-height:70vh;
+}
+
+/* 手机横屏：主动秀牌高亮（尺寸紧凑） */
+body.is-mobile.orientation-landscape #gameScreen .seat.intent-reveal{
+  box-shadow:
+    0 0 18px rgba(59,130,246,.7),
+    0 0 32px rgba(59,130,246,.3),
+    0 8px 20px rgba(0,0,0,.6) !important;
 }
 
 /* ====================================================================
    手机竖屏：只显示"请横屏"提示
    ==================================================================== */
-body.is-mobile.orientation-portrait #gameScreen{
-  display:block;
-  padding:20px;
-}
+body.is-mobile.orientation-portrait #gameScreen{ display:block; padding:20px; }
 body.is-mobile.orientation-portrait #gameScreen .game-topbar{ display:none; }
 body.is-mobile.orientation-portrait #gameScreen .game-layout{ display:none; }
 body.is-mobile.orientation-portrait #gameScreen .online-lobby{ display:none; }
@@ -1832,125 +1851,9 @@ body.is-fullscreen.is-mobile.orientation-landscape #gameScreen{
   height:100dvh;
 }
 
-/* ★ 手机横屏：返回大厅按钮做成红色警告样式 */
-body.is-mobile.orientation-landscape #gameScreen .btn-back{
-  background: rgba(239,68,68,.15) !important;
-  border-color: rgba(239,68,68,.7) !important;
-  color: #fca5a5 !important;
-  font-weight: 800 !important;
-  padding: 5px 10px !important;
-  font-size: 11px !important;
-}
-body.is-mobile.orientation-landscape #gameScreen .btn-back:active{
-  background: rgba(239,68,68,.4) !important;
-}
-
-/* ★ 手机端对局记录浮动按钮 */
-.mobile-log-fab{
-  position: fixed;
-  right: calc(200px + 12px);
-  top: 44px;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: rgba(20,26,38,.95);
-  border: 1px solid rgba(251,191,36,.5);
-  color: var(--gold);
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 80;
-  box-shadow: 0 4px 12px rgba(0,0,0,.6), 0 0 8px rgba(251,191,36,.3);
-  cursor: pointer;
-  user-select: none;
-}
-.mobile-log-fab:active{ background: rgba(251,191,36,.25); }
-.mobile-log-fab.hidden{ display: none !important; }
-
-/* 手机端对局记录面板 */
-.mobile-log-panel{
-  position: fixed;
-  left: 8px;
-  right: calc(200px + 12px);
-  top: 44px;
-  bottom: 8px;
-  background: #0e131c;
-  border: 1px solid rgba(251,191,36,.4);
-  border-radius: 10px;
-  z-index: 90;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0,0,0,.85);
-}
-.mobile-log-panel.hidden{ display: none !important; }
-
-.mobile-log-head{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px 8px;
-  background: #000;
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.mobile-log-tabs{ display: flex; gap: 4px; }
-.mobile-log-tab{
-  padding: 4px 10px;
-  font-size: 11px;
-  font-weight: 700;
-  border-radius: 6px;
-  border: 1px solid var(--border-2);
-  background: transparent;
-  color: var(--text-2);
-  cursor: pointer;
-}
-.mobile-log-tab.active{
-  background: var(--gold);
-  color: #000;
-  border-color: var(--gold);
-}
-
-.mobile-log-body{
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 8px;
-}
-.mobile-log-body.hidden{ display: none !important; }
-
-body.is-mobile.orientation-landscape #mobileLogArea{
-  max-height: none !important;
-  font-size: 11px;
-}
-
-/* 桌面端隐藏手机版按钮 */
-body.is-desktop .mobile-log-fab,
-body.is-desktop .mobile-log-panel{
-  display: none !important;
-}
-
 /* ====================================================================
-   ★ 缩放按钮 + 缩放级别
+   ★ 缩放（zoom 方案）
    ==================================================================== */
-.btn-zoom{
-  background: transparent;
-  color: var(--gold);
-  border: 1px solid var(--gold);
-  padding: 5px 9px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1;
-  cursor: pointer;
-  transition: all .15s;
-  min-width: 28px;
-}
-.btn-zoom:hover{ background: rgba(251,191,36,.15); }
-.btn-zoom:active{ transform: scale(.94); }
-
-/* ★ 缩放：容器尺寸 = 视口 / zoom，配合 zoom 缩小，整体视觉等比缩小 */
 body.zoom-50  #gameScreen{ right:auto!important; bottom:auto!important; width:200vw!important; height:200vh!important; height:200dvh!important; zoom:0.5!important; }
 body.zoom-60  #gameScreen{ right:auto!important; bottom:auto!important; width:166.67vw!important; height:166.67vh!important; height:166.67dvh!important; zoom:0.6!important; }
 body.zoom-70  #gameScreen{ right:auto!important; bottom:auto!important; width:142.86vw!important; height:142.86vh!important; height:142.86dvh!important; zoom:0.7!important; }
@@ -1959,119 +1862,66 @@ body.zoom-90  #gameScreen{ right:auto!important; bottom:auto!important; width:11
 body.zoom-100 #gameScreen{ right:0!important; bottom:0!important; width:100vw!important; height:100vh!important; height:100dvh!important; zoom:1!important; }
 body.zoom-110 #gameScreen{ right:0!important; bottom:0!important; width:100vw!important; height:100vh!important; height:100dvh!important; zoom:1.1!important; }
 
-/* 手机横屏时缩放按钮稍微小一点 */
-body.is-mobile.orientation-landscape #gameScreen .btn-zoom{
-  padding: 3px 7px !important;
-  font-size: 12px !important;
-  min-width: 22px !important;
-}
-
-/* 手机横屏时 game-right 里按钮紧凑排列 */
-body.is-mobile.orientation-landscape #gameScreen .game-right{
-  display: flex !important;
-  gap: 3px !important;
-  align-items: center !important;
-}
-
 /* ====================================================================
-   ★ 手机横屏：右侧操作面板可滚动 + 触摸滚动
+   ★ 手机端对局记录按钮 + 面板
    ==================================================================== */
-body.is-mobile.orientation-landscape #gameScreen .side-right{
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  -webkit-overflow-scrolling: touch !important;
-  scrollbar-width: thin;
+.mobile-log-fab{
+  position:fixed;
+  right:calc(200px + 12px);
+  top:44px;
+  width:36px; height:36px; border-radius:10px;
+  background:rgba(20,26,38,.95);
+  border:1px solid rgba(251,191,36,.5);
+  color:var(--gold);
+  font-size:18px;
+  display:flex; align-items:center; justify-content:center;
+  z-index:80;
+  box-shadow:0 4px 12px rgba(0,0,0,.6),0 0 8px rgba(251,191,36,.3);
+  cursor:pointer; user-select:none;
 }
-body.is-mobile.orientation-landscape #gameScreen .side-right::-webkit-scrollbar{
-  width: 4px;
-}
-body.is-mobile.orientation-landscape #gameScreen .side-right::-webkit-scrollbar-thumb{
-  background: rgba(251,191,36,.5);
-  border-radius: 2px;
-}
+.mobile-log-fab:active{ background:rgba(251,191,36,.25); }
+.mobile-log-fab.hidden{ display:none !important; }
 
-/* ====================================================================
-   ★ 手机横屏：聊天面板整体可滚动 + 输入框固定底部
-   ==================================================================== */
-body.is-mobile.orientation-landscape .chat-panel{
-  max-height: 55vh !important;
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important;
+.mobile-log-panel{
+  position:fixed;
+  left:8px;
+  right:calc(200px + 12px);
+  top:44px; bottom:8px;
+  background:#0e131c;
+  border:1px solid rgba(251,191,36,.4);
+  border-radius:10px;
+  z-index:90;
+  display:flex; flex-direction:column;
+  overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.85);
 }
-body.is-mobile.orientation-landscape .chat-panel .chat-messages{
-  flex: 1 !important;
-  min-height: 60px !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch !important;
+.mobile-log-panel.hidden{ display:none !important; }
+.mobile-log-head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:5px 8px; background:#000;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
 }
-body.is-mobile.orientation-landscape .chat-panel .chat-quick{
-  flex-shrink: 0 !important;
+.mobile-log-tabs{ display:flex; gap:4px; }
+.mobile-log-tab{
+  padding:4px 10px; font-size:11px; font-weight:700;
+  border-radius:6px;
+  border:1px solid var(--border-2);
+  background:transparent; color:var(--text-2);
+  cursor:pointer;
 }
-body.is-mobile.orientation-landscape .chat-panel .chat-input-row{
-  flex-shrink: 0 !important;
-  position: sticky !important;
-  bottom: 0 !important;
-  background: #131822 !important;
-  border-top: 1px solid var(--border) !important;
+.mobile-log-tab.active{
+  background:var(--gold); color:#000;
+  border-color:var(--gold);
 }
-
-/* ====================================================================
-   ★ 主动秀牌：蓝色高亮，区别于金色"当前回合"
-   ==================================================================== */
-.seat.intent-reveal{
-  opacity: 1 !important;
-  filter: none !important;
-  border-color: #3b82f6 !important;
-  box-shadow:
-    0 0 24px rgba(59,130,246,.7),
-    0 0 48px rgba(59,130,246,.35),
-    0 8px 20px rgba(0,0,0,.6) !important;
-  animation: intentRevealPulse 1.2s ease-in-out;
+.mobile-log-body{
+  flex:1; min-height:0;
+  overflow-y:auto; padding:8px;
 }
-.seat.intent-reveal .mini-card{
-  border-color: #60a5fa !important;
-  box-shadow: 0 0 10px rgba(59,130,246,.7), 0 2px 6px rgba(0,0,0,.5) !important;
+.mobile-log-body.hidden{ display:none !important; }
+body.is-mobile.orientation-landscape #mobileLogArea{
+  max-height:none !important;
+  font-size:11px;
 }
-.seat.intent-reveal .seat-name{
-  color: #93c5fd !important;
-}
-
-@keyframes intentRevealPulse{
-  0%{ transform: translate(-50%,-50%) scale(1); }
-  40%{ transform: translate(-50%,-50%) scale(1.08); }
-  100%{ transform: translate(-50%,-50%) scale(1); }
-}
-
-/* 手机横屏尺寸调整 */
-body.is-mobile.orientation-landscape #gameScreen .seat.intent-reveal{
-  box-shadow:
-    0 0 18px rgba(59,130,246,.7),
-    0 0 32px rgba(59,130,246,.3),
-    0 8px 20px rgba(0,0,0,.6) !important;
-}
-
-/* ★ 聊天关闭按钮：加大 + 强制可点 */
-.chat-close{
-  pointer-events: auto !important;
-  z-index: 10 !important;
-  min-width: 32px !important;
-  min-height: 32px !important;
-  padding: 6px 10px !important;
-  font-size: 22px !important;
-  font-weight: 400 !important;
-  line-height: 1 !important;
-  background: transparent !important;
-  border: none !important;
-  color: var(--text-2) !important;
-  cursor: pointer !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-.chat-close:hover{ color: var(--gold) !important; }
-.chat-close:active{ transform: scale(.92) !important; }
-
-/* 保证面板本身可点击 */
-.chat-panel{ pointer-events: auto !important; }
-.chat-panel-head{ pointer-events: auto !important; }
+body.is-desktop .mobile-log-fab,
+body.is-desktop .mobile-log-panel{ display:none !important; }
