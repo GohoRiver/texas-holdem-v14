@@ -1930,3 +1930,45 @@ body.is-desktop .mobile-log-fab,
 body.is-desktop .mobile-log-panel{
   display: none !important;
 }
+
+/* ====================================================================
+   ★ 缩放按钮 + 缩放级别
+   ==================================================================== */
+.btn-zoom{
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 5px 9px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  transition: all .15s;
+  min-width: 28px;
+}
+.btn-zoom:hover{ background: rgba(251,191,36,.15); }
+.btn-zoom:active{ transform: scale(.94); }
+
+/* 缩放级别：作用于 #gameScreen 内所有内容 */
+body.zoom-50 #gameScreen{ zoom: 0.5; }
+body.zoom-60 #gameScreen{ zoom: 0.6; }
+body.zoom-70 #gameScreen{ zoom: 0.7; }
+body.zoom-80 #gameScreen{ zoom: 0.8; }
+body.zoom-90 #gameScreen{ zoom: 0.9; }
+body.zoom-100 #gameScreen{ zoom: 1; }
+body.zoom-110 #gameScreen{ zoom: 1.1; }
+
+/* 手机横屏时缩放按钮稍微小一点 */
+body.is-mobile.orientation-landscape #gameScreen .btn-zoom{
+  padding: 3px 7px !important;
+  font-size: 12px !important;
+  min-width: 22px !important;
+}
+
+/* 手机横屏时 game-right 里按钮紧凑排列 */
+body.is-mobile.orientation-landscape #gameScreen .game-right{
+  display: flex !important;
+  gap: 3px !important;
+  align-items: center !important;
+}
