@@ -1052,11 +1052,13 @@ body.is-mobile.orientation-portrait .seat[data-chip-side="bottom"] .chip-stack-w
 body.is-desktop .seat.me .chip-stack-wrap,
 body.is-mobile.orientation-portrait .seat.me .chip-stack-wrap{
   position:absolute !important;
-  left:50% !important; right:auto !important;
-  top:auto !important;
-  bottom:calc(100% + 44px) !important;
+  left:50% !important;
+  right:auto !important;
+  top:calc(100% + 6px) !important;
+  bottom:auto !important;
   transform:translateX(-50%) !important;
-  z-index:20 !important; margin:0 !important;
+  z-index:20 !important;
+  margin:0 !important;
 }
 body.is-desktop .seat .chip-column,
 body.is-mobile.orientation-portrait .seat .chip-column{ width:16px; }
@@ -1643,9 +1645,10 @@ body.is-mobile.orientation-landscape #gameScreen .seat.me .chip-stack-wrap,
 body.is-mobile.orientation-landscape #gameScreen .seat[data-chip-side="self"] .chip-stack-wrap,
 body.is-mobile.orientation-landscape #gameScreen .seat[data-pid="0"] .chip-stack-wrap{
   position:absolute !important;
-  left:50% !important; right:auto !important;
-  top:auto !important;
-  bottom:calc(100% + 40px) !important;
+  left:50% !important;
+  right:auto !important;
+  top:calc(100% + 4px) !important;
+  bottom:auto !important;
   transform:translateX(-50%) !important;
   margin:0 !important;
   display:flex !important;
@@ -1851,16 +1854,16 @@ body.is-fullscreen.is-mobile.orientation-landscape #gameScreen{
   height:100dvh;
 }
 
-/* ====================================================================
-   ★ 缩放（zoom 方案）
-   ==================================================================== */
-body.zoom-50  #gameScreen{ right:auto!important; bottom:auto!important; width:200vw!important; height:200vh!important; height:200dvh!important; zoom:0.5!important; }
-body.zoom-60  #gameScreen{ right:auto!important; bottom:auto!important; width:166.67vw!important; height:166.67vh!important; height:166.67dvh!important; zoom:0.6!important; }
-body.zoom-70  #gameScreen{ right:auto!important; bottom:auto!important; width:142.86vw!important; height:142.86vh!important; height:142.86dvh!important; zoom:0.7!important; }
-body.zoom-80  #gameScreen{ right:auto!important; bottom:auto!important; width:125vw!important; height:125vh!important; height:125dvh!important; zoom:0.8!important; }
-body.zoom-90  #gameScreen{ right:auto!important; bottom:auto!important; width:111.11vw!important; height:111.11vh!important; height:111.11dvh!important; zoom:0.9!important; }
-body.zoom-100 #gameScreen{ right:0!important; bottom:0!important; width:100vw!important; height:100vh!important; height:100dvh!important; zoom:1!important; }
-body.zoom-110 #gameScreen{ right:0!important; bottom:0!important; width:100vw!important; height:100vh!important; height:100dvh!important; zoom:1.1!important; }
+/* ★ 缩放：JS 动态控制 #gameScreen 的 zoom 和尺寸 */
+#gameScreen {
+  zoom: var(--zoom-scale, 1);
+}
+body.zoom-active #gameScreen {
+  right: auto !important;
+  bottom: auto !important;
+  width: var(--zoom-w, 100vw);
+  height: var(--zoom-h, 100vh);
+}
 
 /* ====================================================================
    ★ 手机端对局记录按钮 + 面板
