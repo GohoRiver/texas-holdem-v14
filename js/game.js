@@ -2726,6 +2726,23 @@ function showHumanControls(){
     raiseBtn.onclick = openRaisePanel;
     box.appendChild(raiseBtn);
   }
+    /* ★ 轮到玩家时，右侧面板自动滚到底部，让按钮可见 */
+  setTimeout(function(){
+    const sr = document.querySelector('.side-right');
+    if(sr && sr.scrollHeight > sr.clientHeight){
+      try {
+        sr.scrollTo({ top: sr.scrollHeight, behavior: 'smooth' });
+      } catch(e){
+        sr.scrollTop = sr.scrollHeight;
+      }
+    }
+    /* 手机横屏：加注面板打开时也滚 */
+    const rp = document.getElementById('raisePanel');
+    if(rp && !rp.classList.contains('hidden')){
+      try { rp.scrollIntoView({ block: 'end', behavior: 'smooth' }); }
+      catch(e){ rp.scrollIntoView(false); }
+    }
+  }, 120);
 }
 
 function openRaisePanel(){
@@ -3036,6 +3053,20 @@ function initChat(){
   }
   /* 初始化 placeholder */
   if(input) input.placeholder = t('chatPlaceholder');
+    /* ★ 点击面板外部关闭 */
+  document.addEventListener('click', function(e){
+    if(!panel || panel.classList.contains('hidden')) return;
+    if(fab && fab.contains(e.target)) return;
+    if(panel.contains(e.target)) return;
+    panel.classList.add('hidden');
+  }, true);
+
+  /* ★ 备选：ESC 关闭 */
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && panel && !panel.classList.contains('hidden')){
+      panel.classList.add('hidden');
+    }
+  });
 }
 
 /* ================= 局内历史 ================= */
