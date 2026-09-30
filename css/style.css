@@ -1972,3 +1972,81 @@ body.is-mobile.orientation-landscape #gameScreen .game-right{
   gap: 3px !important;
   align-items: center !important;
 }
+
+/* ====================================================================
+   ★ 手机横屏：右侧操作面板可滚动 + 触摸滚动
+   ==================================================================== */
+body.is-mobile.orientation-landscape #gameScreen .side-right{
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: thin;
+}
+body.is-mobile.orientation-landscape #gameScreen .side-right::-webkit-scrollbar{
+  width: 4px;
+}
+body.is-mobile.orientation-landscape #gameScreen .side-right::-webkit-scrollbar-thumb{
+  background: rgba(251,191,36,.5);
+  border-radius: 2px;
+}
+
+/* ====================================================================
+   ★ 手机横屏：聊天面板整体可滚动 + 输入框固定底部
+   ==================================================================== */
+body.is-mobile.orientation-landscape .chat-panel{
+  max-height: 55vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+body.is-mobile.orientation-landscape .chat-panel .chat-messages{
+  flex: 1 !important;
+  min-height: 60px !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+body.is-mobile.orientation-landscape .chat-panel .chat-quick{
+  flex-shrink: 0 !important;
+}
+body.is-mobile.orientation-landscape .chat-panel .chat-input-row{
+  flex-shrink: 0 !important;
+  position: sticky !important;
+  bottom: 0 !important;
+  background: #131822 !important;
+  border-top: 1px solid var(--border) !important;
+}
+
+/* ====================================================================
+   ★ 主动秀牌：蓝色高亮，区别于金色"当前回合"
+   ==================================================================== */
+.seat.intent-reveal{
+  opacity: 1 !important;
+  filter: none !important;
+  border-color: #3b82f6 !important;
+  box-shadow:
+    0 0 24px rgba(59,130,246,.7),
+    0 0 48px rgba(59,130,246,.35),
+    0 8px 20px rgba(0,0,0,.6) !important;
+  animation: intentRevealPulse 1.2s ease-in-out;
+}
+.seat.intent-reveal .mini-card{
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 10px rgba(59,130,246,.7), 0 2px 6px rgba(0,0,0,.5) !important;
+}
+.seat.intent-reveal .seat-name{
+  color: #93c5fd !important;
+}
+
+@keyframes intentRevealPulse{
+  0%{ transform: translate(-50%,-50%) scale(1); }
+  40%{ transform: translate(-50%,-50%) scale(1.08); }
+  100%{ transform: translate(-50%,-50%) scale(1); }
+}
+
+/* 手机横屏尺寸调整 */
+body.is-mobile.orientation-landscape #gameScreen .seat.intent-reveal{
+  box-shadow:
+    0 0 18px rgba(59,130,246,.7),
+    0 0 32px rgba(59,130,246,.3),
+    0 8px 20px rgba(0,0,0,.6) !important;
+}
